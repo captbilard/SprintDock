@@ -1,0 +1,38 @@
+services:
+  backend:
+    build: .
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    networks:
+      - sprintdock_network
+  
+  db:
+    image: postgres:18.0-alpine3.22
+    container_name: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+    env_file:
+      - ./.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 30s
+    networks:
+      - sprintdock_network
+  
+volumes:
+  db_data:
+
+networks:
+  sprintdock_network:
+    driver: bridge

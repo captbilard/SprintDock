@@ -1,0 +1,20 @@
+name: Run Tests
+# Trigger this workflow on every pull request
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+      - uses: actions/checkout@v5
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24.7'
+      - name: Install Dependencies
+      - run: npm install
+      - name: Run Tests
+      - run: npm test

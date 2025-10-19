@@ -30,9 +30,6 @@ RUN npm ci --omit=dev
 
 # Copy built artifacts and any runtime files from builder
 COPY --from=builder /usr/src/app/dist ./dist
-# If your app needs other runtime files (public, prisma, migrations, etc.) copy them too
-# COPY --from=builder /usr/src/app/prisma ./prisma
-# COPY --from=builder /usr/src/app/public ./public
 
 EXPOSE 3000
 CMD ["node", "dist/main"]
